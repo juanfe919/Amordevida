@@ -8,7 +8,7 @@
    Formato: { name, lat, lng, special (opcional), note }
    ───────────────────────────────────────────────────────────── */
 const PLACES = [
-  { name: "Filandia",              lat: 4.6736,  lng: -75.6550 },
+  { name: "Filandia",              lat: 4.6736,  lng: -75.6580 },
   { name: "Quimbaya",              lat: 4.6236,  lng: -75.7643 },
   { name: "Circasia",              lat: 4.6174,  lng: -75.6397 },
   { name: "Salento",               lat: 4.6385,  lng: -75.5711 },
@@ -23,7 +23,7 @@ const PLACES = [
      ✏️ Cambia el nombre, coordenadas y nota de este lugar especial */
   {
     name: "Gaia Café con Vista",
-    lat: 4.6390, lng: -75.6600,
+    lat: 4.6750, lng: -75.7820,
     special: true,
     note: "Aquí nos hicimos novios 💕"
   }
