@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para la mujer mas maravillosa</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ============================================================
+       SECCIÓN 1: HERO
+       ✏️ Cambia el subtítulo, título y cita romántica aquí
+       ============================================================ -->
+  <section id="hero">
+    <canvas id="particle-canvas"></canvas>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Para ti, siempre</p>
+      <!-- ✏️ Título principal -->
+      <h1 class="hero-title">Nuestra<br/><em>historia</em></h1>
+      <!-- ✏️ Cita romántica -->
+      <p class="hero-quote">
+        "Cada lugar que hemos recorrido juntos<br/>
+        quedó se ha grabado en mi piel como una constelación."
+      </p>
+      <button class="btn-enter" onclick="enterSite()">
+        <span>Entrar</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
+      </button>
+    </div>
+    <div class="scroll-hint">scroll</div>
+  </section>
+
+  <!-- ============================================================
+       SECCIÓN 2: GALERÍA DE RECUERDOS
+       ✏️ Para agregar fotos: copia cualquier bloque .photo-item
+          y cambia el src. El grid se ajusta automáticamente.
+       ✏️ El emoji en .photo-placeholder aparece si la foto no carga.
+       ✏️ Incrementa data-delay en 80 por cada foto nueva que agregues.
+       ============================================================ -->
+  <section id="recuerdos" class="section hidden-section">
+    <div class="section-header">
+      <span class="section-label">Capítulo I</span>
+      <!-- ✏️ Cambia el título y subtítulo de la galería -->
+      <h2>Algo de nuestros <em>recuerdos</em></h2>
+      <p class="section-sub">Cada foto es un momento que guardo en el fondo de mi corazón.</p>
+    </div>
+
+    <div class="gallery-grid" id="gallery-grid">
+
+      <!-- FOTO 1 ─────────────────────────────────────────────── -->
+      <div class="photo-item" data-delay="0">
+        <img src="photo1.jpg" alt="Recuerdo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder">📸</div>
+      </div>
+
+      <!-- FOTO 2 ──────────────────────────────────────────────── -->
+      <div class="photo-item" data-delay="80">
+        <img src="photo2.jpg" alt="Recuerdo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder">🌄</div>
+      </div>
+
+      <!-- FOTO 3 ──────────────────────────────────────────────── -->
+      <div class="photo-item" data-delay="160">
+        <img src="photo3.jpg" alt="Recuerdo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder">🌿</div>
+      </div>
+
+      <!-- FOTO 4 ──────────────────────────────────────────────── -->
+      <div class="photo-item" data-delay="240">
+        <img src="photo4.jpg" alt="Recuerdo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder">☕</div>
+      </div>
+
+      <!-- FOTO 5 ──────────────────────────────────────────────── -->
+      <div class="photo-item" data-delay="320">
+        <img src="photo5.jpg" alt="Recuerdo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder">🌸</div>
+      </div>
+
+      <!-- FOTO 6 ──────────────────────────────────────────────── -->
+      <div class="photo-item" data-delay="400">
+        <img src="photo6.jpg" alt="Recuerdo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder">🏔️</div>
+      </div>
+      <div class="photo-item" data-delay="400">
+        <img src="photo7.jpg" alt="Recuerdo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder">🏔️</div>
+      </div>
+
+      <!-- ✏️ Agrega más fotos copiando este bloque:
+      <div class="photo-item" data-delay="480">
+        <img src="photoN.jpg" alt="Recuerdo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder">🌙</div>
+      </div>
+      -->
+
+    </div>
+
+    <!-- ✏️ Cambia este texto al pie de la galería -->
+    <p class="gallery-footer-text">
+      Un recuerdo nuestro no cabe en una foto —<br/>pero es bonito intentarlo.
+    </p>
+  </section>
+
+  <!-- ============================================================
+       SECCIÓN 3: LUGARES RECORRIDOS Y POR RECORRER
+       ✏️ Los lugares del mapa se editan en script.js → array PLACES
+       ✏️ Las preguntas de "lo que nos falta" se editan abajo
+       ============================================================ -->
+  <section id="mapa" class="section hidden-section">
+    <div class="section-header">
+      <span class="section-label">Capítulo II</span>
+      <h2>Lugares que hemos <em>recorrido</em></h2>
+      <p class="section-sub">Cada marcador es una huella que dejamos juntos durante este tiempo.</p>
+    </div>
+
+    <div id="map-container">
+      <div id="map"></div>
+    </div>
+
+    <!-- Lo que nos falta por recorrer -->
+    <div class="map-pending">
+      <div class="pending-inner">
+        <span class="pending-icon">🧭</span>
+        <!-- ✏️ Cambia el texto principal de "lo que nos falta" -->
+        <p class="pending-text">
+          Y todavía hay un mundo entero esperándonos… Mi sueño es recorrer el mundo junto a ti<br/>
+          <em>tanto camino sin nuestras huellas.</em>
+        </p>
+        <!-- ✏️ Agrega, quita o cambia estas preguntas -->
+        <div class="pending-questions">
+          <span>¿La costa Pacífica?</span>
+          <span>¿El desierto de la Tatacoa?</span>
+          <span>¿El mar Caribe?</span>
+          <span>¿Medellín de noche?</span>
+          <span>¿El mundo entero?</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECCIÓN 4: PRÓXIMA PARADA
+       ✏️ Cambia la pista principal en .clue-text
+       ✏️ Cambia las pistas secundarias en .clue-details > span
+       ============================================================ -->
+  <section id="aventura" class="section hidden-section">
+    <div class="section-header">
+      <span class="section-label">Capítulo III</span>
+      <h2>Próxima <em>parada</em></h2>
+    </div>
+
+    <div class="adventure-wrap">
+      <div class="mystery-card">
+        <div class="mystery-icon">📍</div>
+        <p class="clue-label">La pista</p>
+        <!-- ✏️ Pista principal -->
+        <blockquote class="clue-text">
+          "Un lugar con colores…<br/>
+          No puedo decirte mas<br/>
+          porque descubres el secreto"<br/>
+        </blockquote>
+        <!-- ✏️ Pistas secundarias -->
+        <div class="clue-details">
+          <span>🍕 ¿Queso?</span>
+          <span>🔥 ¿Un lugar conocido por nosotros?</span>
+          <span>🌿 ¿Agua?</span>
+        </div>
+        <!-- ✏️ Pregunta final -->
+        <p class="mystery-hint">¿Ya sabes a dónde vamos?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECCIÓN 5: BIENESTAR
+       Tres tarjetas con enfoque específico cada una.
+       ✏️ Los mensajes de amor se editan en script.js → LOVE_MESSAGES
+       ✏️ Los consejos de migraña se editan en la lista ul.migraine-tips
+       ============================================================ -->
+  <section id="relax" class="section hidden-section">
+    <div class="section-header">
+      <span class="section-label">Capítulo IV</span>
+      <h2>Para cuando más <em>lo necesitas</em></h2>
+      <p class="section-sub">Este espacio es solo para ti mi niña.</p>
+    </div>
+
+    <div class="relax-grid">
+
+      <!-- ── TARJETA 1: CUANDO ESTÁS ESTRESADA ──────────────── -->
+      <div class="relax-card breath-card">
+        <div class="card-tag stress-tag">Cuando te sientas estresadita</div>
+        <h3>Imagina que estoy a tu lado y respira conmigo</h3>
+        <p class="card-context">
+          El estrés necesita salir. Sigue el ritmo del círculo y deja que tu mente se calme.
+        </p>
+        <div id="breath-circle">
+          <span id="breath-label">·</span>
+        </div>
+        <div id="breath-timer-bar"><div id="breath-timer-fill"></div></div>
+        <button id="btn-breath" class="btn-soft" onclick="toggleBreath()">Comenzar</button>
+      </div>
+
+      <!-- ── TARJETA 2: RAZONES POR LAS QUE TE AMO ─────────── -->
+      <div class="relax-card message-card">
+        <div class="card-tag love-tag">Para que nunca lo olvides</div>
+        <h3>Razones por las que te amo</h3>
+        <p class="card-context">
+          Porque a veces uno necesita escucharlo, aunque ya lo sepa.
+        </p>
+        <div class="love-display">
+          <p id="positive-msg" class="positive-message"></p>
+          <div class="love-number" id="love-counter"></div>
+        </div>
+        <button class="btn-soft" onclick="newMessage()">Otra razón ✨</button>
+      </div>
+
+      <!-- ── TARJETA 3: CUANDO TIENES MIGRAÑA ──────────────── -->
+      <div class="relax-card migraine-card">
+        <div class="card-tag migraine-tag">Cuando llega esa migraña</div>
+        <h3>Te preparé un kit de alivio</h3>
+        <p class="card-context">
+          No puedo estar ahí en persona, pero esto puede ayudarte.
+        </p>
+        <!-- ✏️ Edita, agrega o quita consejos -->
+        <ul class="migraine-tips">
+          <li>
+            <span class="tip-icon">🧊</span>
+            <div>
+              <strong>Frío en la nuca</strong>
+              <p>Aplica algo frío en la nuca o la frente 10–15 min. Reduce la tensión vascular.</p>
+            </div>
+          </li>
+          <li>
+            <span class="tip-icon">🌑</span>
+            <div>
+              <strong>Oscuridad y silencio</strong>
+              <p>Apaga pantallas y persianas. Tu cerebro necesita descanso total de estímulos.</p>
+            </div>
+          </li>
+          <li>
+            <span class="tip-icon">💧</span>
+            <div>
+              <strong>Hidratación lenta</strong>
+              <p>Bebe agua poco a poco. La deshidratación intensifica el dolor.</p>
+            </div>
+          </li>
+          <li>
+            <span class="tip-icon">🫧</span>
+            <div>
+              <strong>Masaje en sienes</strong>
+              <p>Presiona suavemente con los pulgares haciendo círculos pequeños.</p>
+            </div>
+          </li>
+          <li>
+            <span class="tip-icon">🛏️</span>
+            <div>
+              <strong>Acuéstate sin almohada</strong>
+              <p>Con la cabeza al nivel del cuerpo o ligeramente elevada. Reduce la presión.</p>
+            </div>
+          </li>
+        </ul>
+        <!-- ✏️ Cambia este mensaje personal -->
+        <p class="migraine-love-note">"Ojalá pudiera tomar ese dolor por ti, para no verte tener una molestia nunca mas. Descansa, mi amor."</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER — ✏️ Cambia este mensaje
+       ============================================================ -->
+  <footer>
+    <p>Hecho con todo mi amor · <em>Siempre serás el regalo más hermoso que la vida me pudo regalar</em></p>
+  </footer>
+
+  <!-- Barra de navegación flotante -->
+  <nav id="floating-nav" class="hidden">
+    <a href="#recuerdos" onclick="scrollTo('recuerdos')">Recuerdos</a>
+    <a href="#mapa" onclick="scrollTo('mapa')">Lugares</a>
+    <a href="#aventura" onclick="scrollTo('aventura')">Parada</a>
+    <a href="#relax" onclick="scrollTo('relax')">Para ti</a>
+  </nav>
+
+  <!-- Lightbox para fotos -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+    <img id="lb-img" src="" alt=""/>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
